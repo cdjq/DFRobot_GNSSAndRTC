@@ -171,11 +171,8 @@ void DFRobot_SD3031::setAlarm(uint8_t week, uint8_t hour, uint8_t minute, uint8_
 
 int8_t DFRobot_SD3031::getTemperatureC(void)
 {
-  int8_t buffer[2];
   int8_t data = 0;
-  readReg(SD3031_REG_TEMP, buffer, 1);
-  // DBG(buffer[0]);
-  data = buffer[0];
+  readReg(SD3031_REG_TEMP, &data, 1);
   return data;
 }
 
@@ -225,8 +222,8 @@ void DFRobot_SD3031::enable32k()
   uint8_t flag1 = 0;
   uint8_t data;
   readReg(SD3031_REG_CTR3, &data, 1);
-  flag1 = data | 0x40;
   // flag1 = data & 0x00;
+  flag1 = data & 0xBF;
   writeReg(SD3031_REG_CTR3, &flag1, 1);
   delay(100);
 }
@@ -237,7 +234,7 @@ void DFRobot_SD3031::disable32k()
   uint8_t data;
   readReg(SD3031_REG_CTR3, &data, 1);
   // flag1 = data | 0x40;
-  flag1 = data & 0xBF;
+  flag1 = data | 0x40;
   writeReg(SD3031_REG_CTR3, &flag1, 1);
   delay(100);
 }

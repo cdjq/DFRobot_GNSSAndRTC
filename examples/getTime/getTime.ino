@@ -45,7 +45,7 @@ void setup()
     rtc.setHourSystem(rtc.e24hours);//Set display format
     rtc.setTime(2021,7,27,14,59,0);//Initialize time
     // //Get internal temperature
-    Serial.print(rtc.getTemperatureC());
+    // Serial.print(rtc.getTemperatureC());
     // Serial.println(" C");
     // //Get battery voltage
     // Serial.print(rtc.getVoltage());

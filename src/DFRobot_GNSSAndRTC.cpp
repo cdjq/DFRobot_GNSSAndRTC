@@ -80,7 +80,7 @@ uint8_t DFRobot_GNSSAndRTC_I2C::readReg(uint8_t reg, void* pBuf, size_t size)
   }
   uint8_t* _pBuf = (uint8_t*)pBuf;
 
-  if ((reg >= 0x30) && (reg <= 0x79) && (size != 0)) {
+  if ((reg >= 0x30) && (reg <= 0x79) && (size != 0)) {   // Update registers corresponding to RTC module data
     uint8_t data[] = { reg, (uint8_t)size };
     writeReg(REG_RTC_READ_REG, data, 2);
     delay(50);
