@@ -34,6 +34,11 @@ DFRobot_GNSSAndRTC_UART rtc(&Serial1, UART_BAUDRATE);
 #endif
 
 volatile  int8_t alarmFlag = 0;
+void interrupt(void)
+{
+  alarmFlag = 1;
+}
+
 void setup()
 {
   Serial.begin(115200);
@@ -82,8 +87,4 @@ void loop()
     alarmFlag = 0;
     Serial.println("Alarm clock is triggered.");
   }
-}
-void interrupt(void)
-{
-  alarmFlag = 1;
 }

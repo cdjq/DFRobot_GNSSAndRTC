@@ -33,10 +33,14 @@ void DFRobot_GNSSAndRTC::calibRTC(uint8_t hour)
   writeReg(REG_CALIB_RTC_REG, &hour, 1);
 }
 
-uint8_t DFRobot_GNSSAndRTC::calibStatus(void)
+uint8_t DFRobot_GNSSAndRTC::calibStatus(bool mode)
 {
-  uint8_t status = 0;
-  readReg(REG_CALIB_STATUS_REG, &status, 1);
+  uint8_t status = eCalibNone;
+  if (mode) {
+    readReg(REG_CALIB_STATUS_REG, &status, 1);
+  } else {   // The user can manually terminate the calibration
+    writeReg(REG_CALIB_STATUS_REG, &status, 1);
+  }
   return status;
 }
 
@@ -123,8 +127,8 @@ bool DFRobot_GNSSAndRTC_UART::begin()
 {
 #ifdef ESP32
   _serial->begin(_baud, SERIAL_8N1, _txpin, _rxpin);
-// #elif defined(ARDUINO_AVR_UNO) || defined(ESP8266)
-  // nothing use software
+  // #elif defined(ARDUINO_AVR_UNO) || defined(ESP8266)
+    // nothing use software
 #else
   _serial->begin(_baud);  // M0 cannot create a begin in a construct
 #endif

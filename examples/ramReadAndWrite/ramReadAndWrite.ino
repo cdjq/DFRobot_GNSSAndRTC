@@ -35,7 +35,6 @@ DFRobot_GNSSAndRTC_UART rtc(&Serial1, UART_BAUDRATE);
 
 void setup()
 {
-    uint8_t data= 0;
     Serial.begin(115200);
     /*Wait for the chip to be initialized completely, and then exit*/
     while(!rtc.begin()){
@@ -44,7 +43,7 @@ void setup()
     }
     rtc.writeSRAM(0x2D,2);//Address Range 0x2c~0x71
     delay(1000);
-    data = rtc.readSRAM(0x2D);
+    uint8_t data = rtc.readSRAM(0x2D);
     Serial.print("data:");
     Serial.println(data);
     delay(100);

@@ -65,6 +65,8 @@
   /**
    * @fn calibStatus
    * @brief 当前时钟校准状态
+   * @param mode 默认是true, 访问校准状态; 
+   * @n  当连续校准一分钟未成功后，可传入false，手动终止此次校准
    * @return Uint8_t类型，表示当前时钟校准状态
    * @retval 0 未校准
    * @retval 1 校准完成
@@ -72,7 +74,7 @@
    * @note 注: 为避免影响后续的校准状态，
    * @n    “校准完成状态(1)”在第一次读取成功后自动归零
    */
-  uint8_t calibStatus();
+  uint8_t calibStatus(bool mode = true);
 
 /******************************************************************
  *                  RTC(SD3031) 模块 API

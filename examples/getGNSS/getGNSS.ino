@@ -87,7 +87,7 @@ void loop()
 
   // Serial.print("lat DDMM.MMMMM = ");
   // Serial.println(lat.latitude, 5);
-  // Serial.print(" lon DDDMM.MMMMM = ");
+  // Serial.print("lon DDDMM.MMMMM = ");
   // Serial.println(lon.lonitude, 5);
   Serial.print("lat degree = ");
   Serial.println(lat.latitudeDegree, 6);

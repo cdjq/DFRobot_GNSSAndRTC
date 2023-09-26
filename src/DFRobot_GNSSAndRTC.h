@@ -102,6 +102,9 @@ public:
   /**
    * @fn calibStatus
    * @brief Current clock calibration status
+   * @param mode By default, it is set to true, indicating access to the calibration status only.
+   * @n  If continuous calibration for one minute does not return a successful calibration,
+   * @n  you can pass in false to manually terminate this calibration session.
    * @return uint8_t type, indicates current clock calibration status
    * @retval 0 Not calibrated
    * @retval 1 Calibration complete
@@ -109,7 +112,7 @@ public:
    * @note Note: To avoid affecting subsequent calibration status,
    * @n    "Calibration completed Status (1)" is automatically zeroed after a successful read
    */
-  uint8_t calibStatus();
+  uint8_t calibStatus(bool mode = true);
 
 private:
 

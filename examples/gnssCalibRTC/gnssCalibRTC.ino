@@ -50,34 +50,24 @@ void setup()
      * @n If the GNSS module signal is weak, time calibration may encounter issues.
      * @return None
      */
-    // rtc.calibRTC();
+     // rtc.calibRTC();
 
-    /**
-     * @brief The loop automatically performs GNSS timing based on the set interval
-     * @param hour Automatic calibration of the time interval. range: 0~255, unit: hour.
-     * @note When set to zero, automatic time calibration is disabled.
-     * @n Enabling it will trigger an immediate calibration.
-     * @n If the GNSS module signal is weak, time calibration may encounter issues.
-     * @return None
-     */
+     /**
+      * @brief The loop automatically performs GNSS timing based on the set interval
+      * @param hour Automatic calibration of the time interval. range: 0~255, unit: hour.
+      * @note When set to zero, automatic time calibration is disabled.
+      * @n Enabling it will trigger an immediate calibration.
+      * @n If the GNSS module signal is weak, time calibration may encounter issues.
+      * @return None
+      */
     rtc.calibRTC(1);
 
 }
 
+uint8_t underCalibCount = 0;
+
 void loop()
 {
-    /**
-     * @brief Current clock calibration status
-     * @return uint8_t type, indicates current clock calibration status
-     * @retval 0 Not calibrated
-     * @retval 1 Calibration complete
-     * @retval 2 Under calibration
-     * @note Note: To avoid affecting subsequent calibration status,
-     * @n    "Calibration completed Status (1)" is automatically zeroed after a successful read
-     */
-    if (DFRobot_GNSSAndRTC::eCalibComplete == rtc.calibStatus()) {
-        Serial.println("Calibration success!");
-    }
     DFRobot_GNSSAndRTC::sTimeData_t sTime;
     sTime = rtc.getRTCTime();
     Serial.print(sTime.year, DEC);//year
@@ -97,5 +87,7 @@ void loop()
     /*Enable 12-hour time format*/
     // Serial.print(rtc.getAMorPM());
     // Serial.println();
-    delay(1000);
+
+    // In addition to data acquisition and other time consuming, the delay of 900ms makes each loop closer to 1 second
+    delay(900);
 }

@@ -202,6 +202,7 @@ uint8_t DFRobot_SD3031::bin2bcd(uint8_t val)
 {
   return val + 6 * (val / 10);
 }
+
 String DFRobot_SD3031::getAMorPM()
 {
   uint8_t buffer[7];
