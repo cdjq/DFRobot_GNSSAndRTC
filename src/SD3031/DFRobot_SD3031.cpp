@@ -189,7 +189,7 @@ void DFRobot_SD3031::setAlarm(uint16_t year, uint8_t month, uint8_t day)
   writeReg(SD3031_REG_ALARM_SEC, buffer, 8);
 }
 
-void DFRobot_SD3031::setAlarm(uint8_t week, uint8_t hour, uint8_t minute, uint8_t second)
+void DFRobot_SD3031::setAlarm(eWeek_t week, uint8_t hour, uint8_t minute, uint8_t second)
 {
   uint8_t buffer[8];
   uint8_t _hour = 0;
@@ -322,7 +322,7 @@ void DFRobot_SD3031::countDown(uint32_t second)
   } else {
     _second = second;
   }
-  rtc.clearAlarm();   //
+  clearAlarm();   //
 
   data = 0x80;
   writeReg(SD3031_REG_CTR2, &data, 1);

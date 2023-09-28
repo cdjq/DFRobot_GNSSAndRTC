@@ -110,21 +110,29 @@ There are two methods for using this library:<br>
    */
   void setTime(uint16_t year, uint8_t month, uint8_t day,eWeek_t week,uint8_t hour, uint8_t minute, uint8_t second);
 
-
   /**
-   * @fn setAlarmnumber
+   * @fn setAlarm
    * @brief Set the data for triggering alarm
-   * @param trigger Interrupt select
-   * @param year 2000-2099
-   * @param month 1-12
-   * @param day 1-31
-   * @param week 0-6
-   * @param hour 0-23
-   * @param minute 0-59
-   * @param second 0-59
+   * @param year 2000~2099
+   * @param month 1~12
+   * @param day 1~31
    * @return None
    */
-  void setAlarmnumber(eTrigger_t trigger, uint16_t year, uint8_t month, uint8_t day,eWeek_t week,uint8_t hour, uint8_t minute, uint8_t second);
+  void setAlarm(uint16_t year, uint8_t month, uint8_t day);
+  /**
+   * @fn setAlarm
+   * @brief Set the Alarmnumber object
+   * @param week eWeek_t
+   * @n ---------------------------------------------------------------------------------------------------------
+   * @n |    bit7    |    bit6    |    bit5    |    bit4    |    bit3    |    bit2    |    bit1    |    bit0    |
+   * @n ---------------------------------------------------------------------------------------------------------
+   * @n |            |  Saturday  |  Friday    |  Thursday  | Wednesday  |  Tuesday   |  Monday    |  Sunday    |
+   * @n ---------------------------------------------------------------------------------------------------------
+   * @param hour 0~23
+   * @param minute 0~59
+   * @param second 0~59
+   */
+  void setAlarm(uint8_t week, uint8_t hour, uint8_t minute, uint8_t second);
 
   /**
    * @brief Get internal temperature of the clock

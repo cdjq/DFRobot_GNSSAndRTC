@@ -68,6 +68,32 @@ uint8_t underCalibCount = 0;
 
 void loop()
 {
+    /**
+     * @brief Current clock calibration status
+     * @param mode By default, it is set to true, indicating access to the calibration status only.
+     * @n  If continuous calibration for one minute does not return a successful calibration,
+     * @n  you can pass in false to manually terminate this calibration session.
+     * @return uint8_t type, indicates current clock calibration status
+     * @retval 0 Not calibrated
+     * @retval 1 Calibration complete
+     * @retval 2 Under calibration
+     * @note Note: To avoid affecting subsequent calibration status,
+     * @n    "Calibration completed Status (1)" is automatically zeroed after a successful read
+     */
+    uint8_t status = rtc.calibStatus();
+    if (DFRobot_GNSSAndRTC::eCalibComplete == status) {
+        underCalibCount = 0;
+        Serial.println("Calibration success!");
+    } else if (DFRobot_GNSSAndRTC::eUnderCalib == status) {
+        underCalibCount += 1;
+        if (60 <= underCalibCount) {   // If the calibration fails for a long time, manually terminate the calibration
+            rtc.calibStatus(false);
+            underCalibCount = 0;
+            Serial.println("Calibration failed!");
+            Serial.println("It may be due to weak satellite signals.");
+            Serial.println("Please proceed to an open outdoor area for time synchronization.");
+        }
+    }
     DFRobot_GNSSAndRTC::sTimeData_t sTime;
     sTime = rtc.getRTCTime();
     Serial.print(sTime.year, DEC);//year

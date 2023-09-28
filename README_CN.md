@@ -107,21 +107,29 @@
    */
   void setTime(uint16_t year, uint8_t month, uint8_t day,eWeek_t week,uint8_t hour, uint8_t minute, uint8_t second);
 
-
   /**
-   * @fn setAlarmnumber
-   * @brief 设置触发报警的数据
-   * @param trigger 中断选择
+   * @fn setAlarm
+   * @brief 设置触发告警数据
    * @param year 2000~2099
    * @param month 1~12
    * @param day 1~31
-   * @param week 0~6
+   * @return None
+   */
+  void setAlarm(uint16_t year, uint8_t month, uint8_t day);
+  /**
+   * @fn setAlarm
+   * @brief 设置触发告警数据
+   * @param week eWeek_t
+   * @n ---------------------------------------------------------------------------------------------------------
+   * @n |    bit7    |    bit6    |    bit5    |    bit4    |    bit3    |    bit2    |    bit1    |    bit0    |
+   * @n ---------------------------------------------------------------------------------------------------------
+   * @n |            |  Saturday  |  Friday    |  Thursday  | Wednesday  |  Tuesday   |  Monday    |  Sunday    |
+   * @n ---------------------------------------------------------------------------------------------------------
    * @param hour 0~23
    * @param minute 0~59
    * @param second 0~59
-   * @return None
    */
-  void setAlarmnumber(eTrigger_t trigger, uint16_t year, uint8_t month, uint8_t day,eWeek_t week,uint8_t hour, uint8_t minute, uint8_t second);
+  void setAlarm(eWeek_t week, uint8_t hour, uint8_t minute, uint8_t second);
 
   /**
    * @brief 获取时钟内部温度
