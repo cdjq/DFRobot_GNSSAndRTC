@@ -29,13 +29,66 @@ static uint16_t date2days(uint16_t y, uint8_t m, uint8_t d)
   return days + 365 * y + (y + 3) / 4 - 1;    // Return computed value
 }
 
+void DFRobot_SD3031::setHourSystem(eHours_t mode)
+{
+  uint8_t bcdTime, binTime;
+  uint8_t buffer[7] = { 0 };
+  readReg(SD3031_REG_SEC, buffer, 7);
+  // uint32_t t1 = micro();
+  bcdTime = buffer[2];
+  // readReg(SD3031_REG_HOUR, &bcdTime, 1);
+  if (_mode != (bcdTime & 0x80)) {   // If _mode is inconsistent with the mode saved in the clock chip
+    if (_mode != mode) {   // And _mode is inconsistent with the mode to be set
+      _mode = mode;
+      return;   // The saved mode is inconsistent with the current mode of the chip, but the current mode of the chip is consistent with the mode to be set
+    }
+  } else {
+    if (_mode == mode) {
+      return;   // All three modes are consistent
+    }
+    _mode = mode;
+  }
+
+  if (eHours_t::e24hours == (bcdTime & 0x80)) {   // 24 to 12
+    binTime = bcd2bin(bcdTime & 0x7f);
+    if (binTime == 0) {
+      bcdTime = 0x12;
+    } else if (binTime > 0 && binTime < 12) {
+      bcdTime = (0x00 | bin2bcd(binTime));
+    } else if (binTime == 12) {
+      bcdTime = 0x32;
+    } else if (binTime > 12 && binTime < 24) {
+      bcdTime = (0x20 | bin2bcd(binTime - 12));
+    }
+  } else {   // 12 to 24
+    binTime = bcd2bin(bcdTime & 0x1f);
+    if (bcdTime & 0x20) {   // PM
+      if (12 != binTime) {
+        binTime += 12;
+      }
+    } else {   // AM
+      if (12 == binTime) {
+        binTime = 0;
+      }
+    }
+    bcdTime = bin2bcd(binTime) | 0x80;
+  }
+  // uint32_t t2 = micro() - t1;
+  // Serial.println(t2);
+  // readReg(SD3031_REG_SEC, buffer, 7);   // Avoid taking too long up front
+  // delay(0.01);
+  buffer[2] = bcdTime;
+  writeReg(SD3031_REG_SEC, buffer, 7);
+  // writeReg(SD3031_REG_HOUR, &bcdTime, 1);   // Cannot write to a single time register
+}
+
 void DFRobot_SD3031::setTime(uint16_t year, uint8_t month, uint8_t day, uint8_t hour, uint8_t minute, uint8_t second)
 {
   uint8_t _hour = 0, _year = 0, buffer[7], week = 0;
   _year = year - 2000;
   if (_mode == eHours_t::e24hours) {
     _hour = bin2bcd(hour) | 0x80;
-  } else {
+  } else {   // It can only be set in 24 hours
     if (hour == 0) {
       _hour = 0x12;
     } else if (hour > 0 && hour < 12) {
@@ -99,14 +152,15 @@ DFRobot_SD3031::sTimeData_t DFRobot_SD3031::getRTCTime(void)
     sTime.hour = bcd2bin(data & 0x7f);
 
   } else {
-    if (data & 0x20) {
-      data = data << 3;
-      data = bcd2bin(data >> 3);
-    } else {
-      data = data << 2;
-      data = bcd2bin(data >> 2);
-    }
-    sTime.hour = data;
+    // if (data & 0x20) {
+    //   data = data << 3;
+    //   data = bcd2bin(data >> 3);
+    // } else {
+    //   data = data << 2;
+    //   data = bcd2bin(data >> 2);
+    // }
+    // sTime.hour = data;
+    sTime.hour = bcd2bin(data & 0x1f);
   }
   sTime.minute = bcd2bin(buffer[1]);
   sTime.second = bcd2bin(buffer[0]);
@@ -267,8 +321,8 @@ void DFRobot_SD3031::countDown(uint32_t second)
     _second = 0xffffff;
   } else {
     _second = second;
-
   }
+  rtc.clearAlarm();   //
 
   data = 0x80;
   writeReg(SD3031_REG_CTR2, &data, 1);

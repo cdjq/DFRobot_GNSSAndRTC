@@ -156,7 +156,7 @@ private:
 class DFRobot_GNSSAndRTC_UART:public DFRobot_GNSSAndRTC
 {
 public:
-#define UART_BAUDRATE        ((uint32_t)115200)
+#define UART_BAUDRATE        ((uint32_t)57600)
 
 #define UART0_READ_REGBUF    0xBB
 #define UART0_WRITE_REGBUF   0xCC

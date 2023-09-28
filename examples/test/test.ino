@@ -149,7 +149,7 @@ void parseSerialCommand(void)
         String cmd = Serial.readStringUntil('-');   // Read the specified termination character string, used to cut and identify the serial command. The same type won't repeat later.
         int value = Serial.parseInt();   // Parse character string and return int number
 
-        if (cmd.equals("gnns")) {
+        if (cmd.equals("gnss")) {
             switch (value) {
             case 1:
                 /*********************************************************************************
@@ -195,7 +195,6 @@ void parseSerialCommand(void)
             default:
                 break;
             }
-            delay(3000);
 
         } else if (cmd.equals("rtc")) {
             switch (value) {
@@ -265,7 +264,7 @@ void parseSerialCommand(void)
             }
 
             // } else if (cmd.equals("set")) {
-            delay(3000);
+            // delay(3000);
 
         } else {   // Unknown command type
             Serial.println("Help : \n \
@@ -273,9 +272,10 @@ void parseSerialCommand(void)
         Set and open high-pass filter: e.g. hp-500\n \
         Get the address of the remote Bluetooth device: e.g. addr-\n \
       For more details about commands, please refer to the code comments of this demo.\n");
-            delay(1000);
+            // delay(1000);
         }
         while (Serial.read() >= 0);   // Clear the remaining data in the serial port
+        delay(1000);
     }
 }
 

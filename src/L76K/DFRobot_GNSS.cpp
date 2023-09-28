@@ -181,53 +181,53 @@ void DFRobot_GNSS::getAllGnss(void)
     return;
   }
   if (i2cUartFlag == GNSS_UART_FLAG) {
-    uint8_t templen = len / 250 + 1;
+    uint8_t templen = len / UART_MAX_READ_LEN + 1;
     for (uint16_t i = 0; i < templen; i++) {
       if (i == ((uint8_t)(templen - 1))) {
-        readReg(REG_ALL_DATA, _sendData, len % 250);
-        for (uint8_t i = 0; i < len % 250; i++) {
+        readReg(REG_ALL_DATA, _sendData, len % UART_MAX_READ_LEN);
+        for (uint8_t i = 0; i < len % UART_MAX_READ_LEN; i++) {
           if (_sendData[i] == '\0') {
             _sendData[i] = '\n';
           }
         }
         if (callback) {
-          callback((char*)_sendData, (uint8_t)(len % 250));
+          callback((char*)_sendData, (uint8_t)(len % UART_MAX_READ_LEN));
         }
       } else {
-        readReg(REG_ALL_DATA, _sendData, 250);
-        for (uint8_t i = 0; i < 250; i++) {
+        readReg(REG_ALL_DATA, _sendData, UART_MAX_READ_LEN);
+        for (uint8_t i = 0; i < UART_MAX_READ_LEN; i++) {
           if (_sendData[i] == '\0') {
             _sendData[i] = '\n';
           }
         }
 
         if (callback) {
-          callback((char*)_sendData, (uint8_t)250);
+          callback((char*)_sendData, (uint8_t)UART_MAX_READ_LEN);
         }
       }
     }
   } else {
-    uint8_t templen = len / 32 + 1;
+    uint8_t templen = len / I2C_MAX_READ_LEN + 1;
     for (uint16_t i = 0; i < templen; i++) {
       if (i == ((uint8_t)(templen - 1))) {
-        readReg(REG_ALL_DATA, _sendData, len % 32);
-        for (uint8_t i = 0; i < len % 32; i++) {
+        readReg(REG_ALL_DATA, _sendData, len % I2C_MAX_READ_LEN);
+        for (uint8_t i = 0; i < len % I2C_MAX_READ_LEN; i++) {
           if (_sendData[i] == '\0') {
             _sendData[i] = '\n';
           }
         }
         if (callback) {
-          callback((char*)_sendData, (uint8_t)(len % 32));
+          callback((char*)_sendData, (uint8_t)(len % I2C_MAX_READ_LEN));
         }
       } else {
-        readReg(REG_ALL_DATA, _sendData, 32);
-        for (uint8_t i = 0; i < 32; i++) {
+        readReg(REG_ALL_DATA, _sendData, I2C_MAX_READ_LEN);
+        for (uint8_t i = 0; i < I2C_MAX_READ_LEN; i++) {
           if (_sendData[i] == '\0') {
             _sendData[i] = '\n';
           }
         }
         if (callback) {
-          callback((char*)_sendData, (uint8_t)32);
+          callback((char*)_sendData, (uint8_t)I2C_MAX_READ_LEN);
         }
       }
     }

@@ -64,8 +64,8 @@ public:
    * @brief  e24hours, e12hours
    */
   typedef enum {
-    e24hours = 0,
-    e12hours = 1
+    e12hours = 0,
+    e24hours = 1 << 7,
   }eHours_t;
 
   /**
@@ -118,7 +118,7 @@ public:
    * @brief Set clock as 24-hour or 12-hour format
    * @param mode Clock calculation method
    */
-  void setHourSystem(eHours_t mode) { _mode = mode; };
+  void setHourSystem(eHours_t mode);
 
   /**
    * @fn setTime

@@ -67,6 +67,7 @@ void setup()
 
 void loop()
 {
+  Serial.println("\n---------------------------Raw data from L76K-------------------------------");
   gnss.getAllGnss();
   delay(3000);
 }

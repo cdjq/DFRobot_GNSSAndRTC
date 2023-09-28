@@ -66,13 +66,16 @@ public:
 #define GNSS_I2C_FLAG    1
 #define GNSS_UART_FLAG   2
 
-#define TIME_OUT         200   ///< time out
+#define TIME_OUT         200   ///< 200 ms time out
 
   // #define RGB_ON 0x05
   // #define RGB_OFF 0x02
 
 #define ENABLE_POWER     0
 #define DISABLE_POWER    1
+
+#define UART_MAX_READ_LEN   250
+#define I2C_MAX_READ_LEN    32
 
 public:
   /**
